@@ -12,28 +12,7 @@ facerec = dlib.face_recognition_model_v1('models/dlib_face_recognition_resnet_mo
 
 descs = np.load('img/descs.npy')[()]
 
-def encode_face(img):
-  h, w, _ = img.shape
-  blob = cv2.dnn.blobFromImage(img, 1.0, (300, 300), [104, 117, 123], False, False)
-  net.setInput(blob)
     
-  dets=net.forward()
-  
-
-  for i in range(dets.shape[2]):
-    confidence = dets[0, 0, i, 2]
-    if confidence > conf_threshold:
-      left= int(dets[0, 0, i, 3] * w)
-      top= int(dets[0, 0, i, 4] * h)
-      right= int(dets[0, 0, i, 5] * w)
-      bottom= int(dets[0, 0, i, 6] * h)
-  
-      d= dlib.rectangle(left,top,right,bottom)
-      shape = sp(img,d)
-      face_descriptor = facerec.compute_face_descriptor(img, shape)
-      return np.array(face_descriptor)
-
-      
 
    
 video_path = 'img/harrypotter.mp4'
